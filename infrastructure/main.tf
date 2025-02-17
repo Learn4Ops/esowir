@@ -77,7 +77,9 @@ resource "azurerm_key_vault" "aks-kv" {
     secret_permissions = [
       "Get",
       "Set",
-      "List"
+      "List",
+      "Delete",
+      "Purge"
     ]
   }
 }
