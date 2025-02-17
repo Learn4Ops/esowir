@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: testapp-deployment
+  namespace: testapp
+  labels:
+    app: testapp
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: testapp
+  template:
+    metadata:
+      labels:
+        app: testapp
+    spec:
+      serviceAccountName: external-secret-service-account
+      containers:
+      - name: testapp
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: TEST_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: test-credentials
+              key: test-username
+        - name: TEST_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: test-credentials
+              key: test-password
